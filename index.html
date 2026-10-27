@@ -742,6 +742,99 @@
             padding: 28px 0 0;
         }
 
+        /* ---------- Portada de acceso ---------- */
+        .welcome {
+            min-height: 100vh;
+            display: grid;
+            align-content: center;
+            justify-items: center;
+            gap: 28px;
+            padding: 34px 20px;
+            background: radial-gradient(ellipse at 50% 0%, #382344 0%, transparent 46%), var(--bg);
+        }
+
+        .welcome-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--cream);
+            font: 600 17px 'Playfair Display', serif;
+            letter-spacing: .12em;
+        }
+
+        .welcome-brand .sigil {
+            width: 38px;
+            height: 38px;
+            font-size: 19px;
+        }
+
+        .welcome-card {
+            width: min(100%, 480px);
+            padding: clamp(26px, 6vw, 48px);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: linear-gradient(155deg, #211929, #17121c);
+            box-shadow: var(--shadow);
+        }
+
+        .welcome-card h1 {
+            margin: 12px 0;
+            font: 600 clamp(32px, 7vw, 46px)/1.12 'Playfair Display', serif;
+        }
+
+        .welcome-card h1 em {
+            color: var(--lilac);
+            font-style: normal;
+        }
+
+        .welcome-copy {
+            color: var(--muted);
+            line-height: 1.65;
+            margin: 0 0 24px;
+        }
+
+        .welcome-card .authform {
+            gap: 11px;
+        }
+
+        .welcome-card .field {
+            padding: 13px 14px;
+        }
+
+        .welcome-card .authactions {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .welcome-card .authactions button {
+            min-height: 46px;
+        }
+
+        .welcome-card .linkbtn {
+            margin-top: 2px;
+        }
+
+        .welcome-card .authmsg {
+            min-height: 18px;
+            margin-top: 12px;
+        }
+
+        .welcome-note {
+            color: var(--faint);
+            text-align: center;
+            font-size: 11px;
+            margin: 23px 0 0;
+        }
+
+        .welcome-foot {
+            color: #cbb5d3;
+            font: italic 15px 'Playfair Display', serif;
+        }
+
+        .local-continue {
+            width: 100%;
+            margin-top: 12px;
+        }
+
         /* ---------- Responsive ---------- */
         @media (max-width: 820px) {
             .layout {
@@ -802,7 +895,36 @@
 </head>
 
 <body>
-    <main class="shell">
+    <main class="welcome" id="welcomeGate">
+        <div class="welcome-brand"><span class="sigil">✦</span><span>ESTUDIOS</span></div>
+        <section class="welcome-card">
+            <div class="eyebrow">✧ tu espacio para avanzar ✧</div>
+            <h1>Tu organizador<br><em>te está esperando.</em></h1>
+            <p class="welcome-copy">Inicia sesión para organizar tus tareas y exámenes, y tenerlos contigo en todos tus
+                dispositivos.</p>
+            <!-- Formulario de acceso -->
+            <div id="authSignedOut">
+                <p>Entra con tu correo para ver las mismas tareas y exámenes en el PC y en el celular. Si es tu primera
+                    vez, pulsa “Crear cuenta”.</p>
+                <form class="authform" id="authForm" novalidate>
+                    <input class="field" id="authEmail" type="email" autocomplete="email" placeholder="Correo"
+                        aria-label="Correo electrónico">
+                    <input class="field" id="authPassword" type="password" autocomplete="current-password"
+                        placeholder="Contraseña (mínimo 6 caracteres)" aria-label="Contraseña">
+                    <div class="authactions">
+                        <button class="primary" id="loginBtn" type="submit">Entrar</button>
+                        <button class="secondary" id="signupBtn" type="button">Crear cuenta</button>
+                    </div>
+                    <button class="linkbtn" id="resetBtn" type="button">¿Olvidaste tu contraseña?</button>
+                </form>
+            </div>
+            <p class="authmsg" id="authMsg" role="status"></p> <button class="primary local-continue" id="localContinue"
+                type="button" hidden>Continuar sin cuenta</button>
+            <p class="welcome-note">Tu rincón de estudio · DAM</p>
+        </section>
+        <div class="welcome-foot">Un paso a la vez. ✦</div>
+    </main>
+    <main class="shell" id="organizerApp" hidden>
         <header class="top">
             <div class="brand">
                 <div class="sigil">✦</div>
@@ -926,13 +1048,15 @@
                 <div class="steps">
                     <div class="step"><b>1. HTML: el contenido</b>Las etiquetas organizan lo que ves:
                         <code>&lt;form&gt;</code> crea los formularios, <code>&lt;button&gt;</code> los botones y las
-                        secciones separan tareas y calendario.</div>
+                        secciones separan tareas y calendario.
+                    </div>
                     <div class="step"><b>2. CSS: el diseño</b>El bloque <code>&lt;style&gt;</code> define colores,
                         espacios y adaptación a móvil. Las variables al principio (por ejemplo <code>--plum</code>)
                         permiten cambiar la paleta en un solo lugar.</div>
                     <div class="step"><b>3. JavaScript: la interacción</b>El bloque <code>&lt;script&gt;</code> añade,
                         completa y elimina elementos, mueve los meses y guarda cambios en el navegador con
-                        <code>localStorage</code> y, si inicias sesión, en tu cuenta de Firebase.</div>
+                        <code>localStorage</code> y, si inicias sesión, en tu cuenta de Firebase.
+                    </div>
                 </div>
                 <p><b>Para usarla:</b> escribe una tarea, elige asignatura y fecha si quieres, y pulsa “Añadir tarea”.
                     Marca el cuadrado al terminarla y usa × para eliminarla. Las tareas con la fecha límite pasada y
@@ -957,23 +1081,6 @@
         <div class="authbox">
             <h2 id="authTitle">Sincroniza tus dispositivos</h2>
 
-            <!-- Sin sesión -->
-            <div id="authSignedOut">
-                <p>Entra con tu correo para ver las mismas tareas y exámenes en el PC y en el celular. Si es tu primera
-                    vez, pulsa “Crear cuenta”.</p>
-                <form class="authform" id="authForm" novalidate>
-                    <input class="field" id="authEmail" type="email" autocomplete="email" placeholder="Correo"
-                        aria-label="Correo electrónico">
-                    <input class="field" id="authPassword" type="password" autocomplete="current-password"
-                        placeholder="Contraseña (mínimo 6 caracteres)" aria-label="Contraseña">
-                    <div class="authactions">
-                        <button class="primary" id="loginBtn" type="submit">Entrar</button>
-                        <button class="secondary" id="signupBtn" type="button">Crear cuenta</button>
-                    </div>
-                    <button class="linkbtn" id="resetBtn" type="button">¿Olvidaste tu contraseña?</button>
-                </form>
-            </div>
-
             <!-- Con sesión -->
             <div id="authSignedIn" hidden>
                 <p>Sesión iniciada como <span class="who" id="authUser"></span>. Tus cambios se guardan en tu cuenta y
@@ -984,8 +1091,6 @@
                         dispositivo, pero siguen guardados en tu cuenta.</p>
                 </div>
             </div>
-
-            <p class="authmsg" id="authMsg" role="status"></p>
             <button class="linkbtn" id="authClose" type="button" style="width:100%">Cerrar</button>
         </div>
     </dialog>
@@ -1390,6 +1495,7 @@
            users/{uid} con { tasks: [...], exams: [...] }
            ===================================================================== */
         let user = null;              // usuario con sesión iniciada (o null)
+        let localMode = false;
         let unsubscribe = null;       // para dejar de escuchar la nube
         let firstSnapshot = true;     // ¿es la primera respuesta tras iniciar sesión?
         let dirty = false;            // ¿hay cambios locales aún sin confirmar en la nube?
@@ -1555,11 +1661,19 @@
             node.className = 'authmsg' + (type ? ' ' + type : '');
         }
 
+        function renderAccess() {
+            const hasAccess = !!user || localMode;
+            $('#welcomeGate').hidden = hasAccess;
+            $('#organizerApp').hidden = !hasAccess;
+            $('#localContinue').hidden = cloudEnabled;
+        }
+
         function renderAuthView() {
-            $('#authSignedOut').hidden = !!user;
+            $('#authSignedOut').hidden = !!user || !cloudEnabled;
             $('#authSignedIn').hidden = !user;
             if (user) $('#authUser').textContent = user.email;
             showAuthMsg('');
+            renderAccess();
         }
 
         function setAuthBusy(busy) {
@@ -1608,6 +1722,10 @@
             }
         }
 
+        $('#localContinue').addEventListener('click', () => {
+            localMode = true;
+            renderAccess();
+        });
         $('#syncBtn').addEventListener('click', () => {
             if (!cloudEnabled) return;
             renderAuthView();
@@ -1662,11 +1780,16 @@
         renderToday();
         renderAll();
         renderSyncUI();
+        renderAuthView();
+        renderAccess();
 
         if (cloudEnabled) {
             onAuthStateChanged(auth, currentUser => {
                 stopCloud();
                 user = currentUser;
+                localMode = false;
+                renderAuthView();
+                renderAccess();
                 if (user) {
                     startCloud();
                 } else {
@@ -1678,4 +1801,3 @@
 </body>
 
 </html>
-
